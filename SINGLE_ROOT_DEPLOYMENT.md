@@ -13,17 +13,23 @@ One Server: Backend (Express) serves both API and Static Frontend
 
 ## 🏠 Local Development Setup
 
-### 1. **Install Dependencies**
+### 1. **Build Frontend Locally** (Important!)
+```bash
+# From the frontend folder
+cd frontend
+npm install
+npm run build
+```
+This creates `backend/dist/` with the built frontend.
+
+### 2. **Install Backend Dependencies**
 ```bash
 # Backend
 cd backend
 npm install
-
-# Frontend (will auto-build on first install)
-# Already built by backend's postinstall script
 ```
 
-### 2. **Ensure MongoDB is Running**
+### 3. **Ensure MongoDB is Running**
 ```bash
 # On Windows, MongoDB service should be running
 # Or run MongoDB locally:
@@ -49,7 +55,15 @@ npm run dev
 - Delete the **Frontend** service (we don't need separate frontend service)
 - Keep only **Backend** service and **MongoDB** service
 
-### Step 2: Configure Backend Environment Variables
+### Step 2: Ensure Frontend is Built
+1. Build frontend locally:
+   ```bash
+   cd frontend
+   npm run build
+   ```
+2. Verify `backend/dist` folder exists with files
+
+### Step 3: Configure Backend Environment Variables
 1. Go to Railway Dashboard → **Backend** service → **Variables**
 2. Add/Update these variables:
    ```
@@ -60,11 +74,11 @@ npm run dev
    
 3. MongoDB is automatic (Railway provides it if you added MongoDB plugin)
 
-### Step 3: Deploy Backend
-1. Push to GitHub:
+### Step 4: Deploy Backend
+1. Push to GitHub with built frontend:
    ```bash
    git add .
-   git commit -m "Single-root deployment"
+   git commit -m "Single-root deployment with built frontend"
    git push
    ```
 
@@ -72,7 +86,7 @@ npm run dev
 3. Click **Redeploy** (or it auto-deploys on git push)
 4. Wait 2-5 minutes for deployment
 
-### Step 4: Test Production
+### Step 5: Test Production
 - Get your backend Railway URL from the dashboard
 - Open: `https://your-backend-url.up.railway.app`
 - Should see: Task Manager login page
@@ -140,7 +154,37 @@ backend/
 
 ---
 
-## 🎯 What Changed?
+## 🔧 What You Just Did
+
+✅ Built frontend to `backend/dist`
+✅ Removed postinstall script (no Docker path issues)
+✅ Ready for Railway deployment
+
+---
+
+## ⚡ Quick Start (Next Steps)
+
+**1. Commit and push to GitHub:**
+```bash
+git add .
+git commit -m "Single-root deployment - frontend built"
+git push
+```
+
+**2. In Railway Dashboard:**
+   - Backend Service → Redeploy
+   - Wait 2-5 minutes
+
+**3. Test at your backend Railway URL**
+
+---
+
+## 🚀 Important Notes
+
+- **frontend/dist is NOW committed to git** (it's not ignored)
+- **Build frontend locally EVERYTIME you change frontend code**
+- Backend will serve the dist files automatically
+- No need for separate frontend service on Railway
 - ❌ No more separate frontend service
 - ❌ No more VITE_API_URL environment variable
 - ✅ Single backend server serves everything
