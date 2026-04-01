@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import apiClient from '../utils/apiClient';
 import './Auth.css';
 
 const Register = () => {
@@ -16,7 +16,7 @@ const Register = () => {
     setError('');
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, { username, email, password });
+      await apiClient.post('/auth/register', { username, email, password });
       navigate('/login');
     } catch (error) {
       setError(error.response?.data?.error || 'Registration failed');

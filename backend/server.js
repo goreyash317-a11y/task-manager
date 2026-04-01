@@ -8,9 +8,9 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration for production
+// CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: '*',
   credentials: true
 }));
 app.use(express.json());
@@ -21,21 +21,29 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// API Routes
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
-// Default route
-app.get('/', (req, res) => {
+// Serve static files from built frontend
+const frontendDist = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDist));
+
+// API health check
+app.get('/api/health', (req, res) => {
   res.json({ message: 'Task Manager API is running!' });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+// Catch-all: Serve index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendDist, 'index.html'), (err) => {
+    if (err) {
+      res.status(500).json({ error: 'Could not load page' });
+    }
+  });
 });
 
 // Error handling middleware
