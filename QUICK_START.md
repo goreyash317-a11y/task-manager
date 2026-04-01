@@ -37,6 +37,8 @@ git push origin main
    ⚠️ **MONGO_URI is auto-provided!** Don't set it.
 7. **Deploy**
 8. Copy your **backend URL** (e.g., `https://app.up.railway.app`)
+   - ⚠️ **NO PORT NEEDED** - Railway uses standard HTTPS (port 443)
+   - Backend internally runs on PORT 5000 (Railway handles routing)
 
 ---
 
@@ -46,8 +48,10 @@ git push origin main
 2. Select same GitHub repo
 3. **Add Variable:**
    ```
-   VITE_API_URL=https://your-backend-url.up.railway.app
-   ```
+   - ⚠️ **NO PORT NEEDED** - use standard URL without `:5000`
+4. **Deploy**
+5. Your **frontend URL** is your app!
+   - Example: `https://taskmanager-app.up.railway.app` (no port needed)
 4. **Deploy**
 5. Your **frontend URL** is your app!
 
